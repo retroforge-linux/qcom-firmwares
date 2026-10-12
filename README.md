@@ -1,11 +1,12 @@
 # qcom-firmwares
 
-Device-proprietary firmware blobs for the [novadeck](https://github.com/Nova-Deck/novadeck)
-SteamOS-on-Qualcomm project — GPU zap shaders, adsp/cdsp DSP images, the AudioReach audio
-topology, ath12k Wi-Fi/BT, and the Renesas xHCI blob. These are Qualcomm/vendor blobs lifted
+Device-proprietary firmware blobs for [RetroForge](https://github.com/retroforge-linux), a
+retro-emulation Linux distribution for Qualcomm handhelds — GPU zap shaders, adsp/cdsp DSP
+images, modem/WLAN images, the AudioReach audio topology, ath10k/ath12k Wi-Fi and Bluetooth,
+touch and amplifier firmware, and the Renesas xHCI blob. These are Qualcomm/vendor blobs lifted
 from each device's own Android vendor image; the **open** firmware (Adreno microcode, qca BT,
 Iris VPU) lives in upstream [linux-firmware](https://gitlab.com/kernel-firmware/linux-firmware)
-instead and is fetched separately by novadeck.
+instead and is fetched separately by RetroForge.
 
 ## Layout
 
@@ -45,8 +46,16 @@ Known gap: `qcom/sm8250/slpi.mbn`, the sensor DSP every SM8250 board's DTS reque
 not in linux-firmware (which carries only the unrelated Thundercomm RB5 signing) and has not
 been extracted from a device vendor image yet, so those boards have no accelerometer.
 
-## Consumed by novadeck
+## Consumed by RetroForge
 
-novadeck's `firmware/fetch-qcom-fw.sh` fetches this repo at the commit pinned in novadeck's
+RetroForge's `firmware/fetch-qcom-fw.sh` fetches this repo at the commit pinned in its
 `firmware/QCOM_FW.pin`, then verifies every file against `sha256sums.txt` before staging it
-for the kernel build and the read-only rootfs.
+for the kernel build and the read-only rootfs. Adding a blob means adding the file at its
+`/lib/firmware` path plus its line in `sha256sums.txt`, then bumping that pin.
+
+## Origin
+
+This repo started as a history-free import of
+[Nova-Deck/qcom-firmwares](https://github.com/Nova-Deck/qcom-firmwares) at
+`dbf238bd885d5858543b9588fbee9d0645a25d4f`, which provides the SM8650, SM8550 and SM8250
+blobs above. The SM6115 blobs came from ROCKNIX/extra-firmware, as noted in their entry.
