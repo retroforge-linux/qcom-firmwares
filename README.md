@@ -4,9 +4,10 @@ Device-proprietary firmware blobs for [RetroForge](https://github.com/retroforge
 retro-emulation Linux distribution for Qualcomm handhelds — GPU zap shaders, adsp/cdsp DSP
 images, modem/WLAN images, the AudioReach audio topology, ath10k/ath12k Wi-Fi and Bluetooth,
 touch and amplifier firmware, and the Renesas xHCI blob. These are Qualcomm/vendor blobs lifted
-from each device's own Android vendor image; the **open** firmware (Adreno microcode, qca BT,
-Iris VPU) lives in upstream [linux-firmware](https://gitlab.com/kernel-firmware/linux-firmware)
-instead and is fetched separately by RetroForge.
+from each device's own Android vendor image; the **open** firmware (Adreno microcode, WCN7850
+qca BT, Iris VPU) lives in upstream [linux-firmware](https://gitlab.com/kernel-firmware/linux-firmware)
+instead and is fetched separately by RetroForge. Blobs upstream has not taken yet (the WCN7860
+Wi-Fi/BT set) live here until they land there.
 
 ## Layout
 
@@ -18,6 +19,12 @@ path (e.g. `qcom/sm8650/...`), so there is no per-SoC top-level directory:
 
 Boards currently covered:
 
+  * **SM8750** (Snapdragon 8 Elite): AYN Odin 3, KONKR Pocket FIT Elite. Also carries
+    the shared WCN7860 Wi-Fi (`ath12k/WCN7860/`) and Bluetooth (`qca/gngbt*`) blobs —
+    unlike WCN7850, this chip's firmware is not in linux-firmware yet. The SM8750 GPU
+    zap shader and the `vpu35` Iris firmware ARE upstream (20260810), so they are
+    deliberately absent here. `soccp.mbn` is also deliberately absent: the SoCCP
+    remoteproc only serves suspend-to-RAM, which RetroForge does not ship.
   * **SM8650** (Snapdragon 8 Gen 3): AYANEO Pocket S2, KONKR Pocket FIT.
   * **SM8550** (Snapdragon 8 Gen 2): AYN Odin 2 / 2 Mini / 2 Portal / Thor,
     AYANEO Pocket series, Retroid Pocket 6.
