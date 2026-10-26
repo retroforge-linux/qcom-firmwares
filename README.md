@@ -44,13 +44,13 @@ Boards currently covered:
     RG 55G1. The A613 GPU zap under `qcom/sm4450/`, each board's aDSP, WPSS (which carries
     the WCN3990 WLAN firmware) and AW88166 amp calibration under
     `qcom/sm4450/{RPClassic,RG55G1}/`, both AudioReach topologies under `qcom/sm8450/` (the
-    card driver reports sm8450), and `qca/cmnv13t.bin`. These came from
-    [ROCKNIX/extra-firmware](https://github.com/ROCKNIX/extra-firmware) at
+    card driver reports sm8450), and the WCN3950 Bluetooth set under `qca/sm4450/`. These
+    came from [ROCKNIX/extra-firmware](https://github.com/ROCKNIX/extra-firmware) at
     `2486a4167ec2be163ef4d8ee01f34b0b9c5cf44a` (its `SM4450/` directory), byte for byte.
-    ROCKNIX's SM4450 `qca/cmbtfw13.*` and `cmnv13s.bin` are a newer WCN3950 Bluetooth build
-    than the SM6115 ones at the same fixed paths, so they are not taken: one image can hold
-    one, and replacing it would change the MANGMI boards. `cmnv13t.bin` is byte-identical to
-    `cmnv13.bin`.
+    The Bluetooth set is a newer build (BTFM 00125) than the SM6115 one in `qca/` (00116),
+    and the driver's default names are fixed, so it lives in its own directory: the SM4450
+    devicetrees name it with `firmware-name = "sm4450/cmnv13", "sm4450/cmbtfw13.tlv"`
+    (RetroForge kernel patch 1027 keeps the WCN3950's s/t NVM choice under that stem).
 
 Blobs are per-device even when two boards happen to share identical bytes — a device must
 never reference another device's path, or a later per-device fix silently regresses it.
@@ -58,7 +58,7 @@ The AYN Thor Lite's `aw883xx_acf.bin` is exactly that case: byte-identical to th
 AYN Thor's, and stored separately anyway.
 The exception is a file whose path the driver fixes rather than the DTS: `Himax_firmware.bin`,
 `aw88261_acf.bin` and the `qca/` Bluetooth blobs sit where their drivers ask for them, and only
-the SM6115 MANGMI boards use them today (the SM4450 boards share the `qca/` ones).
+the SM6115 MANGMI boards use them today.
 
 Known gap: `qcom/sm8250/slpi.mbn`, the sensor DSP every SM8250 board's DTS requests. It is
 not in linux-firmware (which carries only the unrelated Thundercomm RB5 signing) and has not
